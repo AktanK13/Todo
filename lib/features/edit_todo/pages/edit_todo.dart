@@ -105,7 +105,6 @@ class _TitleField extends StatelessWidget {
     return TextFormField(
       key: const Key('editTodoView_title_textFormField'),
       initialValue: state.title,
-      autofocus: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';

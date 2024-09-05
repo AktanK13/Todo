@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_todo_app/core/constants/constants.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
 import 'package:my_todo_app/features/home/cubit/home_cubit.dart';
 import 'package:my_todo_app/features/stats/pages/stats_page.dart';
@@ -29,7 +30,7 @@ class HomeView extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        key: const Key('homeView_addTodo_floatingActionButton'),
+        key: const Key(AppConsts.kHomeViewAddTodoFloatingActionButton),
         onPressed: () => Navigator.of(context).push(EditTodoPage.route()),
         child: const Icon(Icons.add),
       ),
@@ -42,6 +43,16 @@ class HomeView extends StatelessWidget {
               groupValue: selectedTab,
               value: HomeTab.todos,
               icon: const Icon(Icons.list_rounded),
+            ),
+            _HomeTabButton(
+              groupValue: selectedTab,
+              value: HomeTab.stats,
+              icon: const Icon(Icons.show_chart_rounded),
+            ),
+            _HomeTabButton(
+              groupValue: selectedTab,
+              value: HomeTab.stats,
+              icon: const Icon(Icons.show_chart_rounded),
             ),
             _HomeTabButton(
               groupValue: selectedTab,
