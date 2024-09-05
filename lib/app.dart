@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/home/pages/home_page.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
-import 'package:my_todo_app/common/theme/theme.dart';
+import 'package:my_todo_app/core/theme/theme.dart';
 
 class App extends StatelessWidget {
   const App({required this.todosRepository, super.key});
