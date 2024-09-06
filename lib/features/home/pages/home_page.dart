@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/core/constants/constants.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
+import 'package:my_todo_app/features/favorites/pages/favorites_page.dart';
 import 'package:my_todo_app/features/home/cubit/home_cubit.dart';
 import 'package:my_todo_app/features/stats/pages/stats_page.dart';
 import 'package:my_todo_app/features/todos_overview/pages/todos_overview_page.dart';
@@ -26,8 +27,11 @@ class HomeView extends StatelessWidget {
     final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
 
     return Scaffold(
-      body: const <Widget>[TodosOverviewPage(), StatsPage()][selectedTab.index],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: const <Widget>[
+        TodosOverviewPage(),
+        StatsPage(),
+        FavoritesPage()
+      ][selectedTab.index],
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         key: const Key(AppConsts.kHomeViewAddTodoFloatingActionButton),
@@ -51,13 +55,8 @@ class HomeView extends StatelessWidget {
             ),
             _HomeTabButton(
               groupValue: selectedTab,
-              value: HomeTab.stats,
-              icon: const Icon(Icons.show_chart_rounded),
-            ),
-            _HomeTabButton(
-              groupValue: selectedTab,
-              value: HomeTab.stats,
-              icon: const Icon(Icons.show_chart_rounded),
+              value: HomeTab.favorites,
+              icon: const Icon(Icons.favorite_outline_rounded),
             ),
           ],
         ),

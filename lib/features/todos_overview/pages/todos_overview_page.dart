@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
@@ -80,7 +79,6 @@ class TodosOverviewView extends StatelessWidget {
         ],
         child: BlocBuilder<TodosOverviewBloc, TodosOverviewState>(
           builder: (context, state) {
-            log('data-unique: state: ${state} ');
             if (state.todos.isEmpty) {
               if (state.status == TodosOverviewStatus.loading) {
                 return const Center(

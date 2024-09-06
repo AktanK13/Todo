@@ -58,9 +58,7 @@ class TodoListTile extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           value: todo.isCompleted,
-          onChanged: onToggleCompleted == null
-              ? null
-              : (value) => onToggleCompleted!(value!),
+          onChanged: (value) => onToggleCompleted!(value!),
         ),
         trailing: IconButton(
           isSelected: todo.isFavorite,
