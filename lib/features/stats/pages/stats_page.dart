@@ -31,6 +31,17 @@ class StatsView extends StatelessWidget {
       ),
       body: Column(
         children: [
+          const SizedBox(height: 12),
+          ListTile(
+            key: const Key('statsView_allTodos_listTile'),
+            leading: const Icon(Icons.list_alt_rounded),
+            title: const Text("All todos"),
+            trailing: Text(
+              '${state.allTodos}',
+              style: textTheme.headlineSmall,
+            ),
+          ),
+          const SizedBox(height: 12),
           ListTile(
             key: const Key('statsView_completedTodos_listTile'),
             leading: const Icon(Icons.check_rounded),
@@ -40,12 +51,23 @@ class StatsView extends StatelessWidget {
               style: textTheme.headlineSmall,
             ),
           ),
+          const SizedBox(height: 12),
           ListTile(
             key: const Key('statsView_activeTodos_listTile'),
             leading: const Icon(Icons.radio_button_unchecked_rounded),
             title: const Text("Active todos"),
             trailing: Text(
               '${state.activeTodos}',
+              style: textTheme.headlineSmall,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ListTile(
+            key: const Key('statsView_favoriteTodos_listTile'),
+            leading: const Icon(Icons.favorite_outline_rounded),
+            title: const Text("Active todos"),
+            trailing: Text(
+              '${state.favoriteTodos}',
               style: textTheme.headlineSmall,
             ),
           ),

@@ -4,8 +4,8 @@ import 'package:my_todo_app/core/utils/highlight_utils.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
 import 'package:my_todo_app/features/todos/bloc/todos_bloc.dart';
 
-class TodosOverviewSearchButton extends StatelessWidget {
-  const TodosOverviewSearchButton({super.key});
+class TodosSearchButton extends StatelessWidget {
+  const TodosSearchButton({super.key});
 
   @override
   Widget build(BuildContext context) {

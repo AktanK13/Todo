@@ -4,8 +4,8 @@ import 'package:my_todo_app/features/todos/models/todos_view_filter.dart';
 
 import '../bloc/todos_bloc.dart';
 
-class TodosOverviewFilterButton extends StatelessWidget {
-  const TodosOverviewFilterButton({super.key});
+class TodosFilterButton extends StatelessWidget {
+  const TodosFilterButton({super.key});
 
   @override
   Widget build(BuildContext context) {

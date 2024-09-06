@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
 import 'package:my_todo_app/features/todos/bloc/todos_bloc.dart';
-import 'package:my_todo_app/features/todos/widgets/todos_overview_search_button.dart';
+import 'package:my_todo_app/features/todos/widgets/todos_search_button.dart';
 import 'package:my_todo_app/features/todos/widgets/widgets.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
 
@@ -29,9 +29,9 @@ class TodosView extends StatelessWidget {
       appBar: AppBar(
         title: const Text("My Todos"),
         actions: const [
-          TodosOverviewSearchButton(),
-          TodosOverviewFilterButton(),
-          TodosOverviewOptionsButton(),
+          TodosSearchButton(),
+          TodosFilterButton(),
+          TodosOptionsButton(),
         ],
       ),
       body: MultiBlocListener(
