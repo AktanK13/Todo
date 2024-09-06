@@ -15,6 +15,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
         super(const FavoritesState()) {
     on<FavoritesSubscriptionRequested>(_onSubscriptionRequested);
     on<FavoritesTodoFavoritesToggled>(_onTodoFavoritesToggled);
+    on<FavoritesTodoCompletionToggled>(_onTodoCompletionToggled);
   }
 
   final TodosRepository _todosRepository;
@@ -23,21 +24,30 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       Emitter<FavoritesState> emit) async {
     emit(state.copyWith(status: () => FavoritesStatus.loading));
 
-    // await emit.forEach(
-    //   _todosRepository.getFilteredTodos(),
-    //   onData: (todos) => state.copyWith(
-    //     status: () => FavoritesStatus.success,
-    //     favoritesTodo: () => todos,
-    //   ),
-    //   onError: (_, __) => state.copyWith(
-    //     status: () => FavoritesStatus.failure,
-    //   ),
-    // );
+    try {
+      final favoritesTodos = await _todosRepository.getFavoritesTodos();
+      emit(state.copyWith(
+        status: () => FavoritesStatus.success,
+        favoritesTodo: () => favoritesTodos,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: () => FavoritesStatus.failure));
+    }
   }
 
   Future<void> _onTodoFavoritesToggled(
       FavoritesTodoFavoritesToggled event, Emitter<FavoritesState> emit) async {
-    // final newTodo = event.todo.copyWith(isFavorited: event.isFavorites);
-    // await _todosRepository.saveTodo(newTodo);
+    final newTodo = event.todo.copyWith(isFavorite: event.isFavorites);
+    await _todosRepository.saveTodo(newTodo);
+    add(const FavoritesSubscriptionRequested());
+  }
+
+  Future<void> _onTodoCompletionToggled(
+    FavoritesTodoCompletionToggled event,
+    Emitter<FavoritesState> emit,
+  ) async {
+    final newTodo = event.todo.copyWith(isCompleted: event.isCompleted);
+    await _todosRepository.saveTodo(newTodo);
+    add(const FavoritesSubscriptionRequested());
   }
 }

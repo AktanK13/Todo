@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'dart:async';
-
-// ignore: depend_on_referenced_packages
 import 'package:hive/hive.dart';
 import 'package:my_todo_app/hive/todos_api/models/todo_model.dart';
 import 'package:my_todo_app/hive/todos_api/todos_api.dart';
@@ -13,9 +10,8 @@ class HiveTodosApi extends TodosApi {
     _init();
   }
 
-  late final _todoStreamController = BehaviorSubject<List<TodoModel>>.seeded(
-    const [],
-  );
+  late final _todoStreamController =
+      BehaviorSubject<List<TodoModel>>.seeded(const []);
 
   static const kTodosCollectionKey = '__todos_collection_key__';
 
@@ -49,6 +45,11 @@ class HiveTodosApi extends TodosApi {
   @override
   Stream<List<TodoModel>> getTodos() =>
       _todoStreamController.asBroadcastStream();
+
+  // @override
+  // Future<List<TodoModel>> getTodos() async {
+  //   return _getValue(kTodosCollectionKey);
+  // }
 
   @override
   Future<List<TodoModel>> getFavoritesTodos() async {

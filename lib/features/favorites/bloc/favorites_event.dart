@@ -23,3 +23,17 @@ final class FavoritesTodoFavoritesToggled extends FavoritesEvent {
   @override
   List<Object> get props => [todo, isFavorites];
 }
+
+
+final class FavoritesTodoCompletionToggled extends FavoritesEvent {
+  const FavoritesTodoCompletionToggled({
+    required this.todo,
+    required this.isCompleted,
+  });
+
+  final TodoModel todo;
+  final bool isCompleted;
+
+  @override
+  List<Object> get props => [todo, isCompleted];
+}

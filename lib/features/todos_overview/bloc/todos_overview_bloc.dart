@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/todos_overview/models/todos_view_filter.dart';
@@ -30,7 +29,6 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
     Emitter<TodosOverviewState> emit,
   ) async {
     emit(state.copyWith(status: () => TodosOverviewStatus.loading));
-
     await emit.forEach<List<TodoModel>>(
       _todosRepository.getTodos(),
       onData: (todos) => state.copyWith(
