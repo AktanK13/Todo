@@ -1,29 +1,29 @@
-part of 'todos_overview_bloc.dart';
+part of 'todos_bloc.dart';
 
-enum TodosOverviewStatus { initial, loading, success, failure }
+enum TodosStatus { initial, loading, success, failure }
 
-final class TodosOverviewState extends Equatable {
-  const TodosOverviewState({
-    this.status = TodosOverviewStatus.initial,
+final class TodosState extends Equatable {
+  const TodosState({
+    this.status = TodosStatus.initial,
     this.todos = const [],
     this.filter = TodosViewFilter.all,
     this.lastDeletedTodo,
   });
 
-  final TodosOverviewStatus status;
+  final TodosStatus status;
   final List<TodoModel> todos;
   final TodosViewFilter filter;
   final TodoModel? lastDeletedTodo;
 
   Iterable<TodoModel> get filteredTodos => filter.applyAll(todos);
 
-  TodosOverviewState copyWith({
-    TodosOverviewStatus Function()? status,
+  TodosState copyWith({
+    TodosStatus Function()? status,
     List<TodoModel> Function()? todos,
     TodosViewFilter Function()? filter,
     TodoModel? Function()? lastDeletedTodo,
   }) {
-    return TodosOverviewState(
+    return TodosState(
       status: status != null ? status() : this.status,
       todos: todos != null ? todos() : this.todos,
       filter: filter != null ? filter() : this.filter,
