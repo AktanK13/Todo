@@ -8,7 +8,7 @@ class TodosRepository {
 
   final TodosApi _todosApi;
 
-  Future<List<TodoModel>> getTodos() => _todosApi.getTodos();
+  Stream<List<TodoModel>> getTodos() => _todosApi.getTodos();
   Future<List<TodoModel>> getFavoritesTodos() => _todosApi.getFavoritesTodos();
 
   Future<void> saveTodo(TodoModel todo) => _todosApi.saveTodo(todo);

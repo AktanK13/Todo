@@ -42,14 +42,14 @@ class HiveTodosApi extends TodosApi {
     _todoStreamController.add(todos);
   }
 
-  // @override
-  // Stream<List<TodoModel>> getTodos() =>
-  //     _todoStreamController.asBroadcastStream();
-
   @override
-  Future<List<TodoModel>> getTodos() async {
-    return _getValue(kTodosCollectionKey);
-  }
+  Stream<List<TodoModel>> getTodos() =>
+      _todoStreamController.asBroadcastStream();
+
+  // @override
+  // Future<List<TodoModel>> getTodos() async {
+  //   return _getValue(kTodosCollectionKey);
+  // }
 
   @override
   Future<List<TodoModel>> getFavoritesTodos() async {

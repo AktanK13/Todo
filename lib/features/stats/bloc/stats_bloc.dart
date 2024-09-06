@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_todo_app/hive/todos_api/models/todo_model.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
 
 part 'stats_event.dart';
@@ -18,15 +19,15 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
   FutureOr<void> _onSubscriptionRequested(
       StatsSubscriptionRequested event, Emitter<StatsState> emit) async {
     emit(state.copyWith(status: StatsStatus.loading));
-    try {
-      final todos = await _todosRepository.getTodos();
-      emit(state.copyWith(
+
+    await emit.forEach<List<TodoModel>>(
+      _todosRepository.getTodos(),
+      onData: (todos) => state.copyWith(
         status: StatsStatus.success,
         completedTodos: todos.where((todo) => todo.isCompleted).length,
         activeTodos: todos.where((todo) => !todo.isCompleted).length,
-      ));
-    } catch (e) {
-      emit(state.copyWith(status: StatsStatus.failure));
-    }
+      ),
+      onError: (_, __) => state.copyWith(status: StatsStatus.failure),
+    );
   }
 }
