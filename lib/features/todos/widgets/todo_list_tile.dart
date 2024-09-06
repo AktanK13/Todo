@@ -37,6 +37,7 @@ class TodoListTile extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
+        contentPadding: const EdgeInsets.all(0),
         title: Text(
           todo.title,
           maxLines: 1,

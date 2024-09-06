@@ -95,7 +95,9 @@ class TodosView extends StatelessWidget {
               }
             }
 
-            return ListView.builder(
+            return ListView.separated(
+              padding: const EdgeInsets.all(10),
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemCount: state.filteredTodos.toList().length,
               itemBuilder: (context, index) {
                 final todos = state.filteredTodos.toList();
