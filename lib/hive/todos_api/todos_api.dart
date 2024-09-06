@@ -4,6 +4,7 @@ abstract class TodosApi {
   const TodosApi();
 
   Stream<List<TodoModel>> getTodos();
+  Future<List<TodoModel>> getFavoritesTodos();
   Future<void> saveTodo(TodoModel todo);
   Future<void> deleteTodo(String id);
   Future<int> clearCompleted();

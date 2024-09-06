@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:async';
 
 // ignore: depend_on_referenced_packages
@@ -48,6 +49,12 @@ class HiveTodosApi extends TodosApi {
   @override
   Stream<List<TodoModel>> getTodos() =>
       _todoStreamController.asBroadcastStream();
+
+  @override
+  Future<List<TodoModel>> getFavoritesTodos() async {
+    final todos = _getValue(kTodosCollectionKey);
+    return todos.where((todo) => todo.isFavorite).toList();
+  }
 
   @override
   Future<void> saveTodo(TodoModel todo) {

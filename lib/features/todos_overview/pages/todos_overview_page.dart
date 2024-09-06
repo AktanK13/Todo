@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
@@ -79,6 +80,7 @@ class TodosOverviewView extends StatelessWidget {
         ],
         child: BlocBuilder<TodosOverviewBloc, TodosOverviewState>(
           builder: (context, state) {
+            log('data-unique: state: ${state} ');
             if (state.todos.isEmpty) {
               if (state.status == TodosOverviewStatus.loading) {
                 return const Center(
@@ -95,31 +97,41 @@ class TodosOverviewView extends StatelessWidget {
               }
             }
 
-            return ListView(
-              children: [
-                for (final todo in state.filteredTodos)
-                  TodoListTile(
-                    todo: todo,
-                    onToggleCompleted: (isCompleted) {
-                      context.read<TodosOverviewBloc>().add(
-                            TodosOverviewTodoCompletionToggled(
-                              todo: todo,
-                              isCompleted: isCompleted,
-                            ),
-                          );
-                    },
-                    onDismissed: (_) {
-                      context
-                          .read<TodosOverviewBloc>()
-                          .add(TodosOverviewTodoDeleted(todo));
-                    },
-                    onTap: () {
-                      Navigator.of(context).push(
-                        EditTodoPage.route(initialTodo: todo),
-                      );
-                    },
-                  ),
-              ],
+            return ListView.builder(
+              itemCount: state.filteredTodos.toList().length,
+              itemBuilder: (context, index) {
+                final todos = state.filteredTodos.toList();
+                final todo = todos[index];
+                return TodoListTile(
+                  todo: todo,
+                  onToggleCompleted: (isCompleted) {
+                    context.read<TodosOverviewBloc>().add(
+                          TodosOverviewTodoCompletionToggled(
+                            todo: todo,
+                            isCompleted: isCompleted,
+                          ),
+                        );
+                  },
+                  onToggleFavotired: (bool isFavorite) {
+                    context.read<TodosOverviewBloc>().add(
+                          TodosOverviewTodoFavoritesToggled(
+                            todo: todo,
+                            isFavorited: isFavorite,
+                          ),
+                        );
+                  },
+                  onDismissed: (_) {
+                    context
+                        .read<TodosOverviewBloc>()
+                        .add(TodosOverviewTodoDeleted(todo));
+                  },
+                  onTap: () {
+                    Navigator.of(context).push(
+                      EditTodoPage.route(initialTodo: todo),
+                    );
+                  },
+                );
+              },
             );
           },
         ),

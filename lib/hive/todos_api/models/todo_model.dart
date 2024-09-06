@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
-part 'todo.g.dart';
+part 'todo_model.g.dart';
 
 @HiveType(typeId: 0)
 class TodoModel extends Equatable {
@@ -11,6 +11,7 @@ class TodoModel extends Equatable {
     String? id,
     this.description = '',
     this.isCompleted = false,
+    this.isFavorite = false,
   }) : id = id ?? const Uuid().v4();
 
   @HiveField(0)
@@ -21,21 +22,25 @@ class TodoModel extends Equatable {
   final String description;
   @HiveField(3)
   final bool isCompleted;
+  @HiveField(4)
+  final bool isFavorite;
 
   TodoModel copyWith({
     String? id,
     String? title,
     String? description,
     bool? isCompleted,
+    bool? isFavorite,
   }) {
     return TodoModel(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
   @override
-  List<Object> get props => [id, title, description, isCompleted];
+  List<Object> get props => [id, title, description, isCompleted, isFavorite];
 }

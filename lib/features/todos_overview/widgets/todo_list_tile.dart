@@ -6,12 +6,14 @@ class TodoListTile extends StatelessWidget {
     required this.todo,
     super.key,
     this.onToggleCompleted,
+    required this.onToggleFavotired,
     this.onDismissed,
     this.onTap,
   });
 
   final TodoModel todo;
   final ValueChanged<bool>? onToggleCompleted;
+  final Function(bool) onToggleFavotired;
   final DismissDirectionCallback? onDismissed;
   final VoidCallback? onTap;
 
@@ -60,7 +62,15 @@ class TodoListTile extends StatelessWidget {
               ? null
               : (value) => onToggleCompleted!(value!),
         ),
-        trailing: onTap == null ? null : const Icon(Icons.chevron_right),
+        trailing: IconButton(
+          isSelected: todo.isFavorite,
+          onPressed: () {
+            onToggleFavotired(!todo.isFavorite);
+          },
+          icon: todo.isFavorite
+              ? const Icon(Icons.favorite, color: Colors.red)
+              : const Icon(Icons.favorite_outline_rounded),
+        ),
       ),
     );
   }

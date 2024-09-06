@@ -24,6 +24,19 @@ final class TodosOverviewTodoCompletionToggled extends TodosOverviewEvent {
   List<Object> get props => [todo, isCompleted];
 }
 
+final class TodosOverviewTodoFavoritesToggled extends TodosOverviewEvent {
+  const TodosOverviewTodoFavoritesToggled({
+    required this.todo,
+    required this.isFavorited,
+  });
+
+  final TodoModel todo;
+  final bool isFavorited;
+
+  @override
+  List<Object> get props => [todo, isFavorited];
+}
+
 final class TodosOverviewTodoDeleted extends TodosOverviewEvent {
   const TodosOverviewTodoDeleted(this.todo);
 

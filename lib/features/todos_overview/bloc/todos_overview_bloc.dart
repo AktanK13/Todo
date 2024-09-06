@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/todos_overview/models/todos_view_filter.dart';
@@ -14,6 +15,7 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
         super(const TodosOverviewState()) {
     on<TodosOverviewSubscriptionRequested>(_onSubscriptionRequested);
     on<TodosOverviewTodoCompletionToggled>(_onTodoCompletionToggled);
+    on<TodosOverviewTodoFavoritesToggled>(_onTodoFavoritesToggled);
     on<TodosOverviewTodoDeleted>(_onTodoDeleted);
     on<TodosOverviewUndoDeletionRequested>(_onUndoDeletionRequested);
     on<TodosOverviewFilterChanged>(_onFilterChanged);
@@ -46,6 +48,14 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
     Emitter<TodosOverviewState> emit,
   ) async {
     final newTodo = event.todo.copyWith(isCompleted: event.isCompleted);
+    await _todosRepository.saveTodo(newTodo);
+  }
+
+  Future<void> _onTodoFavoritesToggled(
+    TodosOverviewTodoFavoritesToggled event,
+    Emitter<TodosOverviewState> emit,
+  ) async {
+    final newTodo = event.todo.copyWith(isFavorite: event.isFavorited);
     await _todosRepository.saveTodo(newTodo);
   }
 
