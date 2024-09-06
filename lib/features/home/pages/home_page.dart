@@ -5,7 +5,7 @@ import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
 import 'package:my_todo_app/features/favorites/pages/favorites_page.dart';
 import 'package:my_todo_app/features/home/cubit/home_cubit.dart';
 import 'package:my_todo_app/features/stats/pages/stats_page.dart';
-import 'package:my_todo_app/features/todos_overview/pages/todos_overview_page.dart';
+import 'package:my_todo_app/features/todos/pages/todos_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,7 +28,7 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       body: const <Widget>[
-        TodosOverviewPage(),
+        TodosPage(),
         StatsPage(),
         FavoritesPage()
       ][selectedTab.index],

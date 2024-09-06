@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
 import 'package:my_todo_app/features/favorites/bloc/favorites_bloc.dart';
-import 'package:my_todo_app/features/todos_overview/widgets/todo_list_tile.dart';
+import 'package:my_todo_app/features/todos/widgets/todo_list_tile.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
 
 class FavoritesPage extends StatelessWidget {

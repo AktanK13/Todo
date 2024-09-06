@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_todo_app/features/todos_overview/models/todos_view_filter.dart';
+import 'package:my_todo_app/features/todos/models/todos_view_filter.dart';
 
-import '../bloc/todos_overview_bloc.dart';
+import '../bloc/todos_bloc.dart';
 
 class TodosOverviewFilterButton extends StatelessWidget {
   const TodosOverviewFilterButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final activeFilter =
-        context.select((TodosOverviewBloc bloc) => bloc.state.filter);
+    final activeFilter = context.select((TodosBloc bloc) => bloc.state.filter);
 
     return PopupMenuButton<TodosViewFilter>(
       shape: const ContinuousRectangleBorder(
@@ -19,9 +18,7 @@ class TodosOverviewFilterButton extends StatelessWidget {
       initialValue: activeFilter,
       tooltip: "Filter",
       onSelected: (filter) {
-        context
-            .read<TodosOverviewBloc>()
-            .add(TodosOverviewFilterChanged(filter));
+        context.read<TodosBloc>().add(TodosFilterChanged(filter));
       },
       itemBuilder: (context) {
         return [

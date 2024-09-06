@@ -1,73 +1,73 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_todo_app/features/todos_overview/models/todos_view_filter.dart';
+import 'package:my_todo_app/features/todos/models/todos_view_filter.dart';
 import 'package:my_todo_app/hive/todos_api/models/todo_model.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
 
-part 'todos_overview_event.dart';
-part 'todos_overview_state.dart';
+part 'todos_event.dart';
+part 'todos_state.dart';
 
-class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
-  TodosOverviewBloc({
+class TodosBloc extends Bloc<TodosEvent, TodosState> {
+  TodosBloc({
     required TodosRepository todosRepository,
   })  : _todosRepository = todosRepository,
-        super(const TodosOverviewState()) {
-    on<TodosOverviewSubscriptionRequested>(_onSubscriptionRequested);
-    on<TodosOverviewTodoCompletionToggled>(_onTodoCompletionToggled);
-    on<TodosOverviewTodoFavoritesToggled>(_onTodoFavoritesToggled);
-    on<TodosOverviewTodoDeleted>(_onTodoDeleted);
-    on<TodosOverviewUndoDeletionRequested>(_onUndoDeletionRequested);
-    on<TodosOverviewFilterChanged>(_onFilterChanged);
-    on<TodosOverviewToggleAllRequested>(_onToggleAllRequested);
-    on<TodosOverviewClearCompletedRequested>(_onClearCompletedRequested);
+        super(const TodosState()) {
+    on<TodosSubscriptionRequested>(_onSubscriptionRequested);
+    on<TodosTodoCompletionToggled>(_onTodoCompletionToggled);
+    on<TodosTodoFavoritesToggled>(_onTodoFavoritesToggled);
+    on<TodosTodoDeleted>(_onTodoDeleted);
+    on<TodosUndoDeletionRequested>(_onUndoDeletionRequested);
+    on<TodosFilterChanged>(_onFilterChanged);
+    on<TodosToggleAllRequested>(_onToggleAllRequested);
+    on<TodosClearCompletedRequested>(_onClearCompletedRequested);
   }
 
   final TodosRepository _todosRepository;
 
   Future<void> _onSubscriptionRequested(
-    TodosOverviewSubscriptionRequested event,
-    Emitter<TodosOverviewState> emit,
+    TodosSubscriptionRequested event,
+    Emitter<TodosState> emit,
   ) async {
-    emit(state.copyWith(status: () => TodosOverviewStatus.loading));
+    emit(state.copyWith(status: () => TodosStatus.loading));
     await emit.forEach<List<TodoModel>>(
       _todosRepository.getTodos(),
       onData: (todos) => state.copyWith(
-        status: () => TodosOverviewStatus.success,
+        status: () => TodosStatus.success,
         todos: () => todos,
       ),
       onError: (_, __) => state.copyWith(
-        status: () => TodosOverviewStatus.failure,
+        status: () => TodosStatus.failure,
       ),
     );
   }
 
   Future<void> _onTodoCompletionToggled(
-    TodosOverviewTodoCompletionToggled event,
-    Emitter<TodosOverviewState> emit,
+    TodosTodoCompletionToggled event,
+    Emitter<TodosState> emit,
   ) async {
     final newTodo = event.todo.copyWith(isCompleted: event.isCompleted);
     await _todosRepository.saveTodo(newTodo);
   }
 
   Future<void> _onTodoFavoritesToggled(
-    TodosOverviewTodoFavoritesToggled event,
-    Emitter<TodosOverviewState> emit,
+    TodosTodoFavoritesToggled event,
+    Emitter<TodosState> emit,
   ) async {
     final newTodo = event.todo.copyWith(isFavorite: event.isFavorited);
     await _todosRepository.saveTodo(newTodo);
   }
 
   Future<void> _onTodoDeleted(
-    TodosOverviewTodoDeleted event,
-    Emitter<TodosOverviewState> emit,
+    TodosTodoDeleted event,
+    Emitter<TodosState> emit,
   ) async {
     emit(state.copyWith(lastDeletedTodo: () => event.todo));
     await _todosRepository.deleteTodo(event.todo.id);
   }
 
   Future<void> _onUndoDeletionRequested(
-    TodosOverviewUndoDeletionRequested event,
-    Emitter<TodosOverviewState> emit,
+    TodosUndoDeletionRequested event,
+    Emitter<TodosState> emit,
   ) async {
     assert(
       state.lastDeletedTodo != null,
@@ -80,23 +80,23 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
   }
 
   void _onFilterChanged(
-    TodosOverviewFilterChanged event,
-    Emitter<TodosOverviewState> emit,
+    TodosFilterChanged event,
+    Emitter<TodosState> emit,
   ) {
     emit(state.copyWith(filter: () => event.filter));
   }
 
   Future<void> _onToggleAllRequested(
-    TodosOverviewToggleAllRequested event,
-    Emitter<TodosOverviewState> emit,
+    TodosToggleAllRequested event,
+    Emitter<TodosState> emit,
   ) async {
     final areAllCompleted = state.todos.every((todo) => todo.isCompleted);
     await _todosRepository.completeAll(isCompleted: !areAllCompleted);
   }
 
   Future<void> _onClearCompletedRequested(
-    TodosOverviewClearCompletedRequested event,
-    Emitter<TodosOverviewState> emit,
+    TodosClearCompletedRequested event,
+    Emitter<TodosState> emit,
   ) async {
     await _todosRepository.clearCompleted();
   }

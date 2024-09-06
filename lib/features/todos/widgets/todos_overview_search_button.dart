@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/core/utils/highlight_utils.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
-import 'package:my_todo_app/features/todos_overview/bloc/todos_overview_bloc.dart';
+import 'package:my_todo_app/features/todos/bloc/todos_bloc.dart';
 
 class TodosOverviewSearchButton extends StatelessWidget {
   const TodosOverviewSearchButton({super.key});
@@ -13,7 +13,7 @@ class TodosOverviewSearchButton extends StatelessWidget {
       icon: const Icon(Icons.search),
       tooltip: "Search Todos",
       onPressed: () {
-        final todosBloc = context.read<TodosOverviewBloc>();
+        final todosBloc = context.read<TodosBloc>();
         showSearch(
           context: context,
           delegate: TodosSearchDelegate(todosBloc: todosBloc),
@@ -26,7 +26,7 @@ class TodosOverviewSearchButton extends StatelessWidget {
 class TodosSearchDelegate extends SearchDelegate {
   TodosSearchDelegate({required this.todosBloc});
 
-  final TodosOverviewBloc todosBloc;
+  final TodosBloc todosBloc;
 
   @override
   List<Widget>? buildActions(BuildContext context) {

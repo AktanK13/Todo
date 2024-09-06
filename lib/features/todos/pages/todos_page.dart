@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_todo_app/features/edit_todo/pages/edit_todo.dart';
-import 'package:my_todo_app/features/todos_overview/bloc/todos_overview_bloc.dart';
-import 'package:my_todo_app/features/todos_overview/widgets/todos_overview_search_button.dart';
-import 'package:my_todo_app/features/todos_overview/widgets/widgets.dart';
+import 'package:my_todo_app/features/todos/bloc/todos_bloc.dart';
+import 'package:my_todo_app/features/todos/widgets/todos_overview_search_button.dart';
+import 'package:my_todo_app/features/todos/widgets/widgets.dart';
 import 'package:my_todo_app/hive/todos_repository/todos_repository.dart';
 
-class TodosOverviewPage extends StatelessWidget {
-  const TodosOverviewPage({super.key});
+class TodosPage extends StatelessWidget {
+  const TodosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TodosOverviewBloc(
+      create: (context) => TodosBloc(
         todosRepository: context.read<TodosRepository>(),
-      )..add(const TodosOverviewSubscriptionRequested()),
-      child: const TodosOverviewView(),
+      )..add(const TodosSubscriptionRequested()),
+      child: const TodosView(),
     );
   }
 }
 
-class TodosOverviewView extends StatelessWidget {
-  const TodosOverviewView({super.key});
+class TodosView extends StatelessWidget {
+  const TodosView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,11 @@ class TodosOverviewView extends StatelessWidget {
       ),
       body: MultiBlocListener(
         listeners: [
-          BlocListener<TodosOverviewBloc, TodosOverviewState>(
+          BlocListener<TodosBloc, TodosState>(
             listenWhen: (previous, current) =>
                 previous.status != current.status,
             listener: (context, state) {
-              if (state.status == TodosOverviewStatus.failure) {
+              if (state.status == TodosStatus.failure) {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
@@ -51,7 +51,7 @@ class TodosOverviewView extends StatelessWidget {
               }
             },
           ),
-          BlocListener<TodosOverviewBloc, TodosOverviewState>(
+          BlocListener<TodosBloc, TodosState>(
             listenWhen: (previous, current) =>
                 previous.lastDeletedTodo != current.lastDeletedTodo &&
                 current.lastDeletedTodo != null,
@@ -68,8 +68,8 @@ class TodosOverviewView extends StatelessWidget {
                       onPressed: () {
                         messenger.hideCurrentSnackBar();
                         context
-                            .read<TodosOverviewBloc>()
-                            .add(const TodosOverviewUndoDeletionRequested());
+                            .read<TodosBloc>()
+                            .add(const TodosUndoDeletionRequested());
                       },
                     ),
                   ),
@@ -77,13 +77,13 @@ class TodosOverviewView extends StatelessWidget {
             },
           ),
         ],
-        child: BlocBuilder<TodosOverviewBloc, TodosOverviewState>(
+        child: BlocBuilder<TodosBloc, TodosState>(
           builder: (context, state) {
             if (state.todos.isEmpty) {
-              if (state.status == TodosOverviewStatus.loading) {
+              if (state.status == TodosStatus.loading) {
                 return const Center(
                     child: CircularProgressIndicator.adaptive());
-              } else if (state.status != TodosOverviewStatus.success) {
+              } else if (state.status != TodosStatus.success) {
                 return const SizedBox();
               } else {
                 return Center(
@@ -103,25 +103,23 @@ class TodosOverviewView extends StatelessWidget {
                 return TodoListTile(
                   todo: todo,
                   onToggleCompleted: (isCompleted) {
-                    context.read<TodosOverviewBloc>().add(
-                          TodosOverviewTodoCompletionToggled(
+                    context.read<TodosBloc>().add(
+                          TodosTodoCompletionToggled(
                             todo: todo,
                             isCompleted: isCompleted,
                           ),
                         );
                   },
                   onToggleFavotired: (bool isFavorite) {
-                    context.read<TodosOverviewBloc>().add(
-                          TodosOverviewTodoFavoritesToggled(
+                    context.read<TodosBloc>().add(
+                          TodosTodoFavoritesToggled(
                             todo: todo,
                             isFavorited: isFavorite,
                           ),
                         );
                   },
                   onDismissed: (_) {
-                    context
-                        .read<TodosOverviewBloc>()
-                        .add(TodosOverviewTodoDeleted(todo));
+                    context.read<TodosBloc>().add(TodosTodoDeleted(todo));
                   },
                   onTap: () {
                     Navigator.of(context).push(
