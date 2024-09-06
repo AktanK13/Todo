@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
@@ -27,7 +26,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
     try {
       final favoritesTodos = await _todosRepository.getFavoritesTodos();
-      log('data-unique: favoritesTodos: ${favoritesTodos} ');
       emit(state.copyWith(
         status: () => FavoritesStatus.success,
         favoritesTodo: () => favoritesTodos,
